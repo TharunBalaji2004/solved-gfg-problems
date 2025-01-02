@@ -1,66 +1,73 @@
 //{ Driver Code Starts
-// Initial Template for Java
-import java.io.*;
-import java.lang.*;
 import java.util.*;
 
+// Driver code
 class GFG {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine().trim());
-        while (T-- > 0) {
-            String[] s = br.readLine().trim().split(" ");
-            int V = Integer.parseInt(s[0]);
-            int E = Integer.parseInt(s[1]);
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int testcases = sc.nextInt(); // Taking number of test cases as input
+
+        while (testcases-- > 0) {
+            int V = sc.nextInt(); // Number of vertices
+            int E = sc.nextInt(); // Number of edges
+
+            // Initialize adjacency list
             ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-            for (int i = 0; i < V; i++) adj.add(i, new ArrayList<Integer>());
-            for (int i = 0; i < E; i++) {
-                String[] S = br.readLine().trim().split(" ");
-                int u = Integer.parseInt(S[0]);
-                int v = Integer.parseInt(S[1]);
-                adj.get(u).add(v);
-                adj.get(v).add(u); // Added this line to make the graph undirected
+            for (int i = 0; i < V; i++) {
+                adj.add(new ArrayList<>()); // Create a new list for each vertex
             }
+
+            // Add edges to the adjacency list
+            for (int i = 0; i < E; i++) {
+                int u = sc.nextInt();
+                int v = sc.nextInt();
+                adj.get(u).add(v); // Adding edge u -> v
+                adj.get(v).add(u); // Adding edge v -> u (undirected graph)
+            }
+
+            // Create Solution object and call bfsOfGraph
             Solution obj = new Solution();
-            ArrayList<Integer> ans = obj.bfsOfGraph(adj);
-            for (int i = 0; i < ans.size(); i++) System.out.print(ans.get(i) + " ");
+            ArrayList<Integer> result = obj.bfsOfGraph(V, adj);
+
+            // Print the result
+            for (int node : result) {
+                System.out.print(node + " ");
+            }
             System.out.println();
-            System.out.println("~");
         }
+
+        sc.close(); // Close the scanner
     }
 }
 
 // } Driver Code Ends
 
 
-// User function Template for Java
 class Solution {
-    public ArrayList<Integer> bfsOfGraph(ArrayList<ArrayList<Integer>> adjList) {
+    public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        
+        boolean[] visited = new boolean[V];
         ArrayList<Integer> traversal = new ArrayList<>();
         
-        boolean[] visited = new boolean[adjList.size()];
+        // STEP 1: Create a queue and insert source code
         Queue<Integer> queue = new LinkedList<>();
-        
-        // STEP 1: Mark the start node as visited
-        visited[0] = true;
         queue.add(0);
         traversal.add(0);
+        visited[0] = true;
         
-        // STEP 2: Remove the node and add its neighbors
+        // STEP 2: Explore the neighboring nodes
         while (!queue.isEmpty()) {
             int node = queue.remove();
             
-            for (int neighbor : adjList.get(node)) {
-                
-                // Mark the neighbor node as visited, and add to queue and list
+            for (int neighbor : adj.get(node)) {
+                // STEP 3: Insert the non-visited neighboring nodes into the queue
                 if (!visited[neighbor]) {
-                    queue.add(neighbor);
                     visited[neighbor] = true;
+                    queue.add(neighbor);
                     traversal.add(neighbor);
                 }
             }
         }
-        
         
         return traversal;
     }
