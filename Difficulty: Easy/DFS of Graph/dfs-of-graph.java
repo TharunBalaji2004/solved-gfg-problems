@@ -35,31 +35,36 @@ class GFG {
 
 
 class Solution {
-    private void dfs(int node, ArrayList<ArrayList<Integer>> adjList, boolean[] visited, ArrayList<Integer> traversal) {
-        
-        // STEP 1: Mark the current node as visited
-        visited[node] = true;
-        
-        // STEP 2: Add the current node to traversal list
+    private void dfs(
+        int node, 
+        boolean[] visited, 
+        ArrayList<Integer> traversal, 
+        ArrayList<ArrayList<Integer>> adj) {
+            
+        // STEP 1: Add the current node to traversal list
         traversal.add(node);
         
-        // STEP 3: Go to the neighbor through recursive call
-        for (int neighbor: adjList.get(node)) {
-            
-            // Apply dfs, if the neighbor node is not visited
+        // STEP 2: Mark the current node as visited
+        visited[node] = true;
+        
+        // STEP 3: Call dfs for neighbors
+        for (int neighbor : adj.get(node)) {
+            // STEP 4: Check for non visited neighbor, and apply DFS
             if (!visited[neighbor]) {
-                dfs(neighbor, adjList, visited, traversal);
+                dfs(neighbor, visited, traversal, adj);
             }
         }
     }
     
-    public ArrayList<Integer> dfsOfGraph(ArrayList<ArrayList<Integer>> adjList) {
+    public ArrayList<Integer> dfsOfGraph(ArrayList<ArrayList<Integer>> adj) {
+        
+        int V = adj.size();
+        
+        boolean[] visited = new boolean[V];
+        
         ArrayList<Integer> traversal = new ArrayList<>();
         
-        // Visited array
-        boolean[] visited = new boolean[adjList.size()];
-        
-        dfs(0, adjList, visited, traversal);
+        dfs(0, visited, traversal, adj);
         
         return traversal;
     }
