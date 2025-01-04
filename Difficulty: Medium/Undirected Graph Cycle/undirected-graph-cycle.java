@@ -35,15 +35,14 @@ class GFG {
 
 
 class Solution {
-    
-    private boolean dfs(int node, int prev, ArrayList<ArrayList<Integer>> adjList, boolean[] visited) {
-        visited[node] = true;
+    private boolean dfs(int curr, int prev, ArrayList<ArrayList<Integer>> adjList, boolean[] visited) {
+        visited[curr] = true;
         
-        for (int neighbor : adjList.get(node)) {
+        for (int neighbor: adjList.get(curr)) {
             if (!visited[neighbor]) {
-                if (dfs(neighbor, node, adjList, visited) == true) return true;
+                if (dfs(neighbor, curr, adjList, visited) == true) return true;
             } else if (neighbor != prev) {
-                return true; // Cycle is formed
+                return true; // There is a cycle
             }
         }
         
@@ -51,16 +50,13 @@ class Solution {
     }
     
     public boolean isCycle(ArrayList<ArrayList<Integer>> adjList) {
-        int vertices = adjList.size();
+        int V = adjList.size();
+        boolean[] visited = new boolean[V];
         
-        boolean[] visited = new boolean[vertices];
         
-        for (int i=0;i<vertices;i++) {
-            // Apply DFS for non visited node
+        for (int i=0;i<V;i++) {
             if (!visited[i]) {
-                if (dfs(i, -1, adjList, visited) == true) {
-                    return true;
-                }
+                if (dfs(i, -1, adjList, visited) == true) return true;
             }
         }
         
