@@ -66,35 +66,35 @@ class iPair {
 */
 
 class Solution {
-    ArrayList<Integer> dijkstra(ArrayList<ArrayList<iPair>> adj, int src) {
-        PriorityQueue<iPair> pq = new PriorityQueue<>((a,b) -> a.second - b.second);
+    ArrayList<Integer> dijkstra(ArrayList<ArrayList<iPair>> adjList, int src) {
+        PriorityQueue<iPair> pq = new PriorityQueue<>(
+            (a,b) -> a.second - b.second
+            );
+            
+        // STEP 1
+        ArrayList<Integer> dist = new ArrayList<>();
+        int V = adjList.size();
+        for (int i=0;i<V;i++) dist.add(Integer.MAX_VALUE);
         
-        int V = adj.size();
-        int[] dist = new int[V];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        
-        // start from source node
-        dist[src] = 0;
+        dist.set(src, 0);
         pq.add(new iPair(src, 0));
         
         while (!pq.isEmpty()) {
-            iPair curr = pq.remove();
-            int dest = curr.first;
+            iPair node = pq.poll();
+            int dest = node.first;
             
-            for (int i=0;i<adj.get(dest).size();i++) {
-                int neighbor = adj.get(dest).get(i).first;
-                int weight = adj.get(dest).get(i).second;
+            for (iPair neighbor: adjList.get(dest)) {
+                int weight = neighbor.second; // Neighboring node weight
+                int neigh = neighbor.first; // Neighboring node value
                 
-                if (curr.second + weight < dist[neighbor]) {
-                    dist[neighbor] = curr.second + weight;
-                    pq.add(new iPair(neighbor, dist[neighbor]));
+                if (node.second + weight < dist.get(neigh)) {
+                    dist.set(neigh, node.second + weight);
+                    
+                    pq.add(new iPair(neigh, node.second + weight));
                 }
             }
         }
         
-        ArrayList<Integer> res = new ArrayList<>();
-        for (int num : dist) res.add(num);
-        
-        return res;
+        return dist;
     }
 }
