@@ -41,17 +41,14 @@ class Solution {
         
         for (int i=0;i<V;i++) {
             for (int j=0;j<V;j++) {
-                if (mat[i][j] == -1) {
-                    mat[i][j] = Integer.MAX_VALUE;
-                }
+                if (mat[i][j] == -1) mat[i][j] = Integer.MAX_VALUE;
             }
         }
         
-        // K times
         for (int k=0;k<V;k++) {
             for (int i=0;i<V;i++) {
                 for (int j=0;j<V;j++) {
-                    if (mat[i][k] != Integer.MAX_VALUE && mat[k][j] != Integer.MAX_VALUE) {
+                    if (mat[i][k] !=Integer.MAX_VALUE && mat[k][j] != Integer.MAX_VALUE) {
                         mat[i][j] = Math.min(mat[i][j], mat[i][k] + mat[k][j]);
                     }
                 }
@@ -60,11 +57,8 @@ class Solution {
         
         for (int i=0;i<V;i++) {
             for (int j=0;j<V;j++) {
-                if (mat[i][j] == Integer.MAX_VALUE) {
-                    mat[i][j] = -1;
-                }
+                if (mat[i][j] == Integer.MAX_VALUE) mat[i][j] = -1;
             }
         }
-        
     }
 }
